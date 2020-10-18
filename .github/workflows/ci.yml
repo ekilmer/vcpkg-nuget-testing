@@ -21,7 +21,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
-
+        with:
+          submodules: 'recursive'
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
         with:

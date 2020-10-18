@@ -1,4 +1,4 @@
 [submodule "vcpkg"]
 	path = vcpkg
-	url = git@github.com:ekilmer/vcpkg.git
+	url = https://github.com/ekilmer/vcpkg.git
 	branch = master
