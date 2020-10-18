@@ -31,7 +31,7 @@ jobs:
       - name: 'Setup NuGet Credentials'
         shell: 'bash'
         run: >
-          dotnet "$('${VCPKG_ROOT}/vcpkg' fetch nuget | tail -n 1)"
+          dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
           add source https://nuget.pkg.github.com/ekilmer/index.json
           -n github
           -u ekilmer
