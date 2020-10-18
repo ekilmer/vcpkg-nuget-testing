@@ -18,14 +18,14 @@ runs-on: ${{ matrix.os }}
 
 steps:
   - uses: actions/checkout@v2
-  - name: Restore from cache and install vcpkg
-      # Download and build vcpkg, without installing any port. If content is cached already, it is a no-op.
-      uses: lukka/run-vcpkg@v4
-      with:
-        setupOnly: true
+
+  - name: 'Restore from cache and install vcpkg'
+    uses: lukka/run-vcpkg@v4
+    with:
+      setupOnly: true
+
   - name: 'Setup NuGet Credentials'
     shell: 'bash'
-    # Replace <OWNER> with your organization name
     run: >
       dotnet "$('${VCPKG_ROOT}/vcpkg' fetch nuget | tail -n 1)"
       add source https://nuget.pkg.github.com/ekilmer/index.json
@@ -34,11 +34,12 @@ steps:
       -p "${{ secrets.GITHUB_TOKEN }}"
       --store-password-in-clear-text
 
-  # Omit this step if you're using manifests
+  # Omit this step if using manifests
   - name: 'vcpkg package restore'
     shell: 'bash'
     run: >
       "${VCPKG_ROOT}/vcpkg" install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
+
   - name: 'Test'
     shell: 'bash'
     run: echo "Hello world"
