@@ -14,7 +14,7 @@ jobs:
         include:
           - os: 'windows-2019'
             triplet: 'x64-windows'
-            dotnet: 'dotnet'
+            dotnet: ''
           - os: 'ubuntu-20.04'
             triplet: 'x64-linux'
             dotnet: 'mono'
@@ -49,7 +49,7 @@ jobs:
         run: |
           ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
           cat ../nuget.config
-          "${VCPKG_ROOT}/vcpkg" install gtest sqlite3 --triplet ${{ matrix.triplet }} --debug
+          "${VCPKG_ROOT}/vcpkg" install glog gtest sqlite3 --triplet ${{ matrix.triplet }} --debug
 
       - name: 'Test'
         shell: 'bash'
