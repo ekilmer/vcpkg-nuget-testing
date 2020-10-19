@@ -14,10 +14,13 @@ jobs:
         include:
           - os: 'windows-2019'
             triplet: 'x64-windows'
+            dotnet: 'dotnet'
           - os: 'ubuntu-20.04'
             triplet: 'x64-linux'
+            dotnet: 'mono'
           - os: 'macos-latest'
             triplet: 'x64-osx'
+            dotnet: 'mono'
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v2
@@ -40,9 +43,9 @@ jobs:
         shell: 'bash'
         # dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
         run: >
-          dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
-          add source
-          https://nuget.pkg.github.com/ekilmer/index.json
+          ${{ matrix.dotnet }} "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
+          sources add
+          -Source https://nuget.pkg.github.com/ekilmer/index.json
           -name GitHub
           -username ekilmer
           -password "${{ secrets.GITHUB_TOKEN }}"
