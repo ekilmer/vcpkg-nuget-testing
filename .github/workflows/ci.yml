@@ -30,7 +30,7 @@ jobs:
         shell: 'bash'
         # dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
         run: >
-          nuget
+          dotnet nuget
           add source https://nuget.pkg.github.com/ekilmer/index.json
           --name github
           --username ekilmer
