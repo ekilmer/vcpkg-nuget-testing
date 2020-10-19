@@ -36,8 +36,10 @@ jobs:
       - name: 'debug'
         shell: 'bash'
         run: |
-          cat nuget.config
+          ls
+          ls ..
           cat ../nuget.config
+          cat nuget.config
 
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
