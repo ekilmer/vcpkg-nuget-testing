@@ -3,6 +3,7 @@ name: Continuous Integration
 on: [push]
 
 env:
+  # "Source" is set in the setup-dotnet action
   VCPKG_BINARY_SOURCES: 'clear;nuget,Source,readwrite'
 
 
@@ -22,6 +23,7 @@ jobs:
             triplet: 'x64-osx'
             dotnet: 'mono'
     runs-on: ${{ matrix.os }}
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -30,14 +32,17 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '3.1.x' # SDK Version to use.
+          # Sets as "Source"
           source-url: https://nuget.pkg.github.com/ekilmer/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: 'debug'
+      - name: 'debug nuget config'
         shell: 'bash'
         run: |
+          # Written set-dotnet action writes the config here
           cat ../nuget.config
 
+        # Needed for caching the actual vcpkg executable
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
         with:
@@ -47,8 +52,8 @@ jobs:
       - name: 'vcpkg package install deps'
         shell: 'bash'
         run: |
+          # Still need to explicitly sest the api key here for whatever reason
           ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
-          cat ../nuget.config
           "${VCPKG_ROOT}/vcpkg" install glog gtest sqlite3 --triplet ${{ matrix.triplet }} --debug
 
       - name: 'Test'
