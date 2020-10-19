@@ -3,7 +3,7 @@ name: Continuous Integration
 on: [push]
 
 env:
-  VCPKG_BINARY_SOURCES: 'clear;nugetconfig,${{ github.workspace }}/../nuget.config,readwrite'
+  VCPKG_BINARY_SOURCES: 'clear;nuget,Source,readwrite'
 
 
 jobs:
@@ -36,7 +36,7 @@ jobs:
       - name: 'debug'
         shell: 'bash'
         run: |
-          cat ../nuget.config
+          cat ${{ github.workspace }}/../nuget.config
 
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
