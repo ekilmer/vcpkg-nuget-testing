@@ -33,6 +33,11 @@ jobs:
           source-url: https://nuget.pkg.github.com/ekilmer/index.json
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: 'debug'
+        shell: 'bash'
+        run: |
+          cat nuget.config
+          cat ../nuget.config
 
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
