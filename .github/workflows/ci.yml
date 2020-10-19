@@ -37,6 +37,8 @@ jobs:
         shell: 'bash'
         run: |
           cat ../nuget.config
+          ${{ matrix.dotnet }} nuget setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
+          cat ../nuget.config
 
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
