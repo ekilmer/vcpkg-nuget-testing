@@ -36,6 +36,18 @@ jobs:
         with:
           setupOnly: true
 
+      - name: 'Setup NuGet Credentials'
+        shell: 'bash'
+        # dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
+        run: >
+          dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
+          add source
+          https://nuget.pkg.github.com/ekilmer/index.json
+          -name GitHub
+          -username ekilmer
+          -password "${{ secrets.GITHUB_TOKEN }}"
+          -storepasswordincleartext
+
           # Omit this step if using manifests
       - name: 'vcpkg package install deps'
         shell: 'bash'
