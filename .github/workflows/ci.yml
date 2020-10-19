@@ -32,9 +32,9 @@ jobs:
         run: >
           nuget
           add source https://nuget.pkg.github.com/ekilmer/index.json
-          -n github
-          -u ekilmer
-          -p "${{ secrets.GITHUB_TOKEN }}"
+          --name github
+          --username ekilmer
+          --password "${{ secrets.GITHUB_TOKEN }}"
           --store-password-in-clear-text
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
