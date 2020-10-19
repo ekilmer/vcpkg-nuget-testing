@@ -31,11 +31,12 @@ jobs:
         # dotnet "$("${VCPKG_ROOT}/vcpkg" fetch nuget | tail -n 1)"
         run: >
           dotnet nuget
-          add source https://nuget.pkg.github.com/ekilmer/index.json
-          --name GitHub
-          --username ekilmer
-          --password "${{ secrets.GITHUB_TOKEN }}"
-          --store-password-in-clear-text
+          sources add
+          -source https://nuget.pkg.github.com/ekilmer/index.json
+          -name GitHub
+          -username ekilmer
+          -password "${{ secrets.GITHUB_TOKEN }}"
+          -storepasswordincleartext
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
         with:
