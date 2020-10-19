@@ -45,7 +45,7 @@ jobs:
       - name: 'vcpkg package install deps'
         shell: 'bash'
         run: >
-          "${VCPKG_ROOT}/vcpkg" install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
+          "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet ${{ matrix.triplet }} --debug
 
       - name: 'Test'
         shell: 'bash'
