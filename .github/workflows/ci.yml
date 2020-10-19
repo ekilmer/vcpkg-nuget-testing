@@ -37,8 +37,6 @@ jobs:
         shell: 'bash'
         run: |
           cat ../nuget.config
-          ${{ matrix.dotnet }} nuget setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
-          cat ../nuget.config
 
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
@@ -48,7 +46,9 @@ jobs:
         # Omit this step if using manifests
       - name: 'vcpkg package install deps'
         shell: 'bash'
-        run: >
+        run: |
+          ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
+          cat ../nuget.config
           "${VCPKG_ROOT}/vcpkg" install gtest sqlite3 --triplet ${{ matrix.triplet }} --debug
 
       - name: 'Test'
