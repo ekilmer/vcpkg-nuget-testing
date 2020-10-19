@@ -18,16 +18,19 @@ jobs:
             dotnet: ''
             generator: 'Visual Studio 16 2019'
             cmakeargs: '-A x64'
+            binpath: './build/Debug/main.exe'
           - os: 'ubuntu-20.04'
             triplet: 'x64-linux'
             dotnet: 'mono'
             generator: 'Unix Makefiles'
             cmakeargs: ''
+            binpath: './build/main'
           - os: 'macos-latest'
             triplet: 'x64-osx'
             dotnet: 'mono'
             generator: 'Xcode'
             cmakeargs: ''
+            binpath: './build/Debug/main'
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -60,7 +63,7 @@ jobs:
         run: |
           # Still need to explicitly sest the api key here for whatever reason
           ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
-          "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet "${{ matrix.triplet }}" ${{ matrix.cmakeargs }} --debug
+          "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet "${{ matrix.triplet }}" --debug
 
       - name: 'Build'
         shell: 'bash'
@@ -70,4 +73,4 @@ jobs:
 
       - name: 'Test'
         shell: 'bash'
-        run: ./build/main
+        run: "${{ matrix.binpath }}"
