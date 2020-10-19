@@ -42,7 +42,7 @@ jobs:
           setupOnly: true
 
           # Omit this step if using manifests
-      - name: 'vcpkg package restore'
+      - name: 'vcpkg package install deps'
         shell: 'bash'
         run: >
           "${VCPKG_ROOT}/vcpkg" install sqlite3 cpprestsdk --triplet ${{ matrix.triplet }}
