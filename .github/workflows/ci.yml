@@ -80,7 +80,7 @@ jobs:
         run: |
           # Need to explicitly set the ApiKey here for some reason
           ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
-          "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet "${{ matrix.triplet }}" --debug
+          "${VCPKG_ROOT}/vcpkg" install sqlite3 yaml-cpp --triplet "${{ matrix.triplet }}" --debug
 
       - name: 'Build'
         shell: 'bash'
