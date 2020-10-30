@@ -11,25 +11,31 @@ jobs:
   build:
     strategy:
       matrix:
-        os: ['windows-2019', 'ubuntu-20.04', 'macos-latest']
+        os: ['windows-2019', 'ubuntu-20.04', 'ubuntu-18.04', 'macos-latest']
         include:
           - os: 'windows-2019'
             triplet: 'x64-windows'
             dotnet: ''
             generator: 'Visual Studio 16 2019'
-            cmakeargs: '-A x64'
+            cmakeConfigArgs: '-A x64'
             binpath: './build/Debug/main.exe'
           - os: 'ubuntu-20.04'
             triplet: 'x64-linux'
             dotnet: 'mono'
             generator: 'Unix Makefiles'
-            cmakeargs: ''
+            cmakeConfigArgs: ''
+            binpath: './build/main'
+          - os: 'ubuntu-18.04'
+            triplet: 'x64-linux'
+            dotnet: 'mono'
+            generator: 'Unix Makefiles'
+            cmakeConfigArgs: ''
             binpath: './build/main'
           - os: 'macos-latest'
             triplet: 'x64-osx'
             dotnet: 'mono'
             generator: 'Xcode'
-            cmakeargs: ''
+            cmakeConfigArgs: ''
             binpath: './build/Debug/main'
     runs-on: ${{ matrix.os }}
 
@@ -64,13 +70,13 @@ jobs:
         shell: 'bash'
         run: |
           # Still need to explicitly set the api key here for whatever reason
-          ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
+          # ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
           "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet "${{ matrix.triplet }}" --debug
 
       - name: 'Build'
         shell: 'bash'
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake -G "${{ matrix.generator }}" ${{ matrix.cmakeargs }}
+          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake -G "${{ matrix.generator }}" ${{ matrix.cmakeConfigArgs }}
           cmake --build build
 
       - name: 'Test'
