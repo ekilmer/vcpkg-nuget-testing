@@ -61,6 +61,7 @@ jobs:
       - name: 'Restore from cache and install vcpkg'
         uses: lukka/run-vcpkg@v4
         with:
+          appendedCacheKey: ${{ matrix.os }}
           # Only cache the vcpkg executable. Libraries are restored using NuGet
           vcpkgArtifactIgnoreEntries: "!.git\n**/*\n!/vcpkg\n!vcpkg.exe\n!vcpkgArtifactIgnoreEntries\n"
           setupOnly: true
