@@ -86,7 +86,7 @@ jobs:
       - name: 'Build'
         shell: 'bash'
         run: |
-          cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake -G "${{ matrix.generator }}" ${{ matrix.cmakeConfigArgs }}
+          cmake -B build -S . -DCMAKE_VERBOSE_MAKEFILE=ON -DCMAKE_TOOLCHAIN_FILE=$(pwd)/vcpkg/scripts/buildsystems/vcpkg.cmake -G "${{ matrix.generator }}" ${{ matrix.cmakeConfigArgs }}
           cmake --build build
 
       - name: 'Test'
