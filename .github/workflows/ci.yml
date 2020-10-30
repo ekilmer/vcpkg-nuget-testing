@@ -6,7 +6,6 @@ env:
   # "Source" is set in the setup-dotnet action
   VCPKG_BINARY_SOURCES: 'clear;nuget,Source,readwrite'
 
-
 jobs:
   build:
     strategy:
@@ -37,6 +36,7 @@ jobs:
             generator: 'Xcode'
             cmakeConfigArgs: ''
             binpath: './build/Debug/main'
+
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -51,11 +51,21 @@ jobs:
           source-url: https://nuget.pkg.github.com/ekilmer/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 'debug nuget config'
         shell: 'bash'
         run: |
           # Written set-dotnet action writes the config here
           cat ../nuget.config
+
+      - name: 'Setup Dev Environment'
+        shell: 'bash'
+        run: |
+          if [[ "${{ matrix.triplet }}" == *"linux"* ]]; then
+            echo "CC=clang" >> $GITHUB_ENV
+            echo "CXX=clang++" >> $GITHUB_ENV
+            echo "CPP=clang++" >> $GITHUB_ENV
+          fi
 
         # Needed for caching the actual vcpkg executable
       - name: 'Restore from cache and install vcpkg'
