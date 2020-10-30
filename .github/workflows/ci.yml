@@ -65,6 +65,7 @@ jobs:
             echo "CC=clang" >> $GITHUB_ENV
             echo "CXX=clang++" >> $GITHUB_ENV
             echo "CPP=clang++" >> $GITHUB_ENV
+            echo "LD=ld.gold" >> $GITHUB_ENV
           fi
 
         # Needed for caching the actual vcpkg executable
