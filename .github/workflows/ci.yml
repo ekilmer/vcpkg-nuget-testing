@@ -61,7 +61,7 @@ jobs:
       - name: 'vcpkg package install deps'
         shell: 'bash'
         run: |
-          # Still need to explicitly sest the api key here for whatever reason
+          # Still need to explicitly set the api key here for whatever reason
           ${{ matrix.dotnet }} $(${VCPKG_ROOT}/vcpkg fetch nuget | tail -n 1) setapikey ${{ secrets.GITHUB_TOKEN }} -source https://nuget.pkg.github.com/ekilmer/index.json
           "${VCPKG_ROOT}/vcpkg" install sqlite3 --triplet "${{ matrix.triplet }}" --debug
 
